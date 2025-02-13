@@ -1,3 +1,0 @@
-# LÉO NÃO VÁ EMBORA
-
-## NÃO VÁ EMBORA LÉO
