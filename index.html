@@ -1,38 +1,24 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" 
-    content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <script src="scripts.js"></script>
-    <title></title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pixel Art Simples</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-    <div class="caixa-maior">
-        <input class="input-cidade" placeholder="Digite o nome da cidade">
-        <button class="botao-busca" onclick="cliqueNoBotao()">
-            <image class="img-busca" alt="busca" src="https://www.svgrepo.com/show/488200/find.svg"></image>
-        </button>
+  <h1>Pixel Art Simples</h1>
 
-        <div class="caixa-media"></div>
-        <h2 class="cidade">Tempo em São Paulo</h2>
+  <div class="toolbar">
+    <input type="color" id="colorPicker" value="#000000" />
+    <button onclick="setTool('paint')">Pincel</button>
+    <button onclick="setTool('erase')">Borracha</button>
+    <button onclick="clearGrid()">Limpar</button>
+    <button onclick="saveImage()">Salvar</button>
+  </div>
 
-        <p class="temp">21°C</p>
+  <canvas id="pixelCanvas" width="320" height="320"></canvas>
 
-        <div class="caixa-menor">
-            <img class="imsg-previsao" alt="icone-info-tempo" src="https://openweathermap.org/img/wn/04n.png">
-            <p class="texto-previsao">Nublado</p>
-        </div>
-
-        <p class="umidade"> Umidade:76%</p>
-    </div>
-    </div>
+  <script src="script.js"></script>
 </body>
-
 </html>
