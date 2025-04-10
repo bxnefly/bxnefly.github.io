@@ -1,22 +1,47 @@
-const key = "d8939f898492c70ac214cca730b8b3ad"
+const canvas = document.getElementById("pixelCanvas");
+const ctx = canvas.getContext("2d");
+const colorPicker = document.getElementById("colorPicker");
 
-function colocarDadosNaTela(dados){
-    console.log(dados)
-    document.querySelector(".cidade").innerHTML = "Tempo em " + dados.name
-    document.querySelector(".temp").innerHTML = Math.floor (dados.main.temp) + "°C"
-    document.querySelector(".texto-previsao").innerHTML = dados.weather[0].description
-    document.querySelector(".umidade").innerHTML = dados.main.humidity + "%"
-    document.querySelector(".img-previsao").src = `https://openweathermap.org/img/wn/${dados.weather[0].icon}.png`
+const pixelSize = 20;
+const gridSize = canvas.width / pixelSize;
+let tool = "paint";
+
+// desenha o grid
+function drawGrid() {
+  for (let x = 0; x < canvas.width; x += pixelSize) {
+    for (let y = 0; y < canvas.height; y += pixelSize) {
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(x, y, pixelSize, pixelSize);
+      ctx.strokeStyle = "#ddd";
+      ctx.strokeRect(x, y, pixelSize, pixelSize);
+    }
+  }
 }
 
-async function buscarCidade(cidade) {
-    const dados = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${key}&lang=pt_br&units=metric`)  
-        .then(resposta => resposta.json()) // Apenas corrigi a interpolação da string  
-        
-    colocarDadosNaTela(dados)
+drawGrid();
+
+canvas.addEventListener("click", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = Math.floor((e.clientX - rect.left) / pixelSize) * pixelSize;
+  const y = Math.floor((e.clientY - rect.top) / pixelSize) * pixelSize;
+
+  ctx.fillStyle = tool === "erase" ? "#ffffff" : colorPicker.value;
+  ctx.fillRect(x, y, pixelSize, pixelSize);
+  ctx.strokeStyle = "#ddd";
+  ctx.strokeRect(x, y, pixelSize, pixelSize);
+});
+
+function setTool(selectedTool) {
+  tool = selectedTool;
 }
 
-function cliqueNoBotao () {
-    const cidade = document.querySelector(".input-cidade").value
-    buscarCidade(cidade)
+function clearGrid() {
+  drawGrid();
+}
+
+function saveImage() {
+  const link = document.createElement("a");
+  link.download = "pixel-art.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
 }
