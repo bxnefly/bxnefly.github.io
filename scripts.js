@@ -1,47 +1,42 @@
-const canvas = document.getElementById("pixelCanvas");
-const ctx = canvas.getContext("2d");
-const colorPicker = document.getElementById("colorPicker");
+const key = "d8939f898492c70ac214cca730b8b3ad";
 
-const pixelSize = 20;
-const gridSize = canvas.width / pixelSize;
-let tool = "paint";
+function colocarDadosNaTela(dados) {
+    console.log(dados);
+    document.querySelector(".cidade").innerHTML = "Tempo em " + dados.name;
+    document.querySelector(".temp").innerHTML = Math.floor(dados.main.temp) + "°C";
+    document.querySelector(".texto-previsao").innerHTML = dados.weather[0].description;
+    document.querySelector(".umidade").innerHTML = "Umidade: " + dados.main.humidity + "%";
+    document.querySelector(".img-previsao").src = `https://openweathermap.org/img/wn/${dados.weather[0].icon}.png`;
+}
 
-// desenha o grid
-function drawGrid() {
-  for (let x = 0; x < canvas.width; x += pixelSize) {
-    for (let y = 0; y < canvas.height; y += pixelSize) {
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(x, y, pixelSize, pixelSize);
-      ctx.strokeStyle = "#ddd";
-      ctx.strokeRect(x, y, pixelSize, pixelSize);
+async function buscarCidade(cidade) {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${key}&lang=pt_br&units=metric`;
+
+    try {
+        const resposta = await fetch(url);
+        const dados = await resposta.json();
+        
+        if (dados.cod === "404") {
+            alert("Cidade não encontrada!");
+            return;
+        }
+
+        colocarDadosNaTela(dados);
+    } catch (erro) {
+        console.error("Erro ao buscar dados:", erro);
     }
-  }
 }
 
-drawGrid();
+function cliqueNoBotao() {
+    const cidade = document.querySelector(".input-cidade").value;
+    if (cidade.trim() !== "") {
+        buscarCidade(cidade);
+    }
+}
 
-canvas.addEventListener("click", (e) => {
-  const rect = canvas.getBoundingClientRect();
-  const x = Math.floor((e.clientX - rect.left) / pixelSize) * pixelSize;
-  const y = Math.floor((e.clientY - rect.top) / pixelSize) * pixelSize;
-
-  ctx.fillStyle = tool === "erase" ? "#ffffff" : colorPicker.value;
-  ctx.fillRect(x, y, pixelSize, pixelSize);
-  ctx.strokeStyle = "#ddd";
-  ctx.strokeRect(x, y, pixelSize, pixelSize);
+// Adiciona o evento de pressionar Enter
+document.querySelector(".input-cidade").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        cliqueNoBotao();
+    }
 });
-
-function setTool(selectedTool) {
-  tool = selectedTool;
-}
-
-function clearGrid() {
-  drawGrid();
-}
-
-function saveImage() {
-  const link = document.createElement("a");
-  link.download = "pixel-art.png";
-  link.href = canvas.toDataURL("image/png");
-  link.click();
-}
