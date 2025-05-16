@@ -11,7 +11,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("https://github.com/user-attachments/assets/864b8974-722f-405a-97aa-34d88778069e");
+    background-image: url("https://github.com/user-attachments/assets/618e271d-19c4-4afe-b04e-bc35b0a892f3");
     background-size: cover;           /* Faz a imagem cobrir toda a tela */
     background-position: center;      /* Centraliza a imagem */
     background-repeat: no-repeat;     /* Evita que a imagem se repita */
@@ -19,12 +19,14 @@ body {
 
 
 .caixa-maior {
-    background: #000000;
-    opacity: 0.8;
+    background: rgba(44, 47, 51, 0.3); /* cor com transparência */
+    backdrop-filter: blur(8px);        /* efeito de desfoque atrás da caixa */
+    -webkit-backdrop-filter: blur(10px); /* compatibilidade com Safari */
     border-radius: 25px;
     padding: 20px;
     width: 95%;
     max-width: 450px;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* borda sutil para efeito vidro */
 }
 
 .input-cidade {
